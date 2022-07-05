@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+
+
+  <script src="echarts.js"></script>
+
+  <script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, 'dark', {
+      renderer: 'svg',
+      useDirtyRect: true
+    });
+    var app = {};
+    
+    var option;
+
+    
+let dataX= ['2001', '2012', '2013', '2014', '2015', '2016', '2017', '2018','2019','2020']
+let dataY =[5.94, 6.58,6.56, 7.5, 8.45, 9.8, 11.04, 12.78, 15.1,15.5]
+let dataY1 =[0.57, 0.61, 0.67, 0.75, 0.71, 0.81, 0.92, 0.86, 0.83,0.99]
+var option = {
+    backgroundColor: '#0D2753',
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'none',
+        },
+        formatter: function (params) {
+            return (
+                dataX[params[0].dataIndex] +
+                '<br/>交易量（亿枝）：' +
+                dataY[params[0].dataIndex] +
+                '亿枝' +
+                '<br> 均价（元）' +
+                dataY1[params[0].dataIndex] +
+                '元'
+            );
+        },
+    },
+    grid: {
+        top: '10%',
+        bottom: '5%',
+        left: '5%',
+        right: '5%',
+        containLabel: true,
+    },
+    legend: {
+        data: ['交易量', '均价'],
+        left: '15',
+        top: '15',
+        textStyle: {
+            padding:[4,0,0,0],
+            color: '33FFFF',
+        },
+        itemWidth: 15,
+        itemHeight: 10,
+        itemGap: 25,
+    },
+    xAxis: {
+        type: 'category',
+        data: dataX,
+        axisLine: {
+            lineStyle: {
+                color: 'rgba(66, 192, 255, .3)',
+            },
+        },
+        
+        axisLabel: {
+        rotate: -45,
+            textStyle: {
+                color: '#33FFFF',
+            },
+        },
+    },
+
+    yAxis: [
+        {
+            type: 'value',
+            splitLine: {
+                show: false,
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#5FBBEB',
+                },
+            },
+            axisLine: {
+                lineStyle: {
+                    fontSize:12,
+                    color: 'rgba(66, 192, 255, .3)',
+                },
+            },
+        },
+        {
+            type: 'value',
+            name: '(交易量)',
+            nameTextStyle: {
+                color: '#d2d2d2',
+            },
+            max:'16',
+            min:'0',
+            scale: true,
+            position: 'right',
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(66, 192, 255, .3)',
+                },
+            },
+            splitLine: {
+                show: false,
+            },
+            axisLabel: {
+                show: true,
+                formatter: '{value} 亿枝', //右侧Y轴文字显示
+                textStyle: {
+                    fontSize:12,
+                    color: '#42C0FF',
+                },
+            },
+        },
+    ],
+    series: [
+        {
+            name: '交易量/亿枝',
+            type: 'bar',
+            barWidth: '12px',
+            itemStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                            offset: 0,
+                            color: '#29acff',
+                        },
+                        {
+                            offset: 1,
+                            color: '#4bdfff',
+                        },
+                    ]),
+                    barBorderRadius: 6,
+                },
+            },
+            data: dataY1,
+        },
+        {
+            name: '均价（元）',
+            type: 'line',
+            yAxisIndex: 1, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
+            smooth: false, //平滑曲线显示
+
+            symbol: 'circle', //标记的图形为实心圆
+            symbolSize: 8, //标记的大小
+            itemStyle: {
+                normal: {
+                    color: '#ffa43a',
+                    borderColor: 'rgba(255, 234, 0, 0.5)', //圆点透明 边框
+                    borderWidth: 5,
+                },
+            },
+            lineStyle: {
+                color: '#ffa43a',
+            },
+
+            data: dataY,
+        },
+    ],
+};
+
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
+</html>
